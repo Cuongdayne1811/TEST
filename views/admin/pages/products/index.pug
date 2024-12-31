@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/filter-status.pug
 include ../../mixins/search.pug
+include ../../mixins/pagination.pug
 
 block main
     h1 Danh Sách Sản Phẩm 
@@ -48,16 +49,5 @@ block main
                     td 
                         button.btn.btn-warning.btn-sm Sửa
                         button.btn.btn-danger.btn-sm.ml-1 Xóa
-
-    nav 
-        ul(class="pagination")
-            li(class="page-item")
-                button(class="page-link") Trang trước 
-            li(class="page-item")
-                button(class="page-link") 1
-            li(class="page-item active")
-                button(class="page-link") 2
-            li(class="page-item")
-                button(class="page-link") 3
-            li(class="page-item")
-                button(class="page-link") Trang kế tiếp
+    +pagination(pagination)
+    

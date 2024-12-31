@@ -4,6 +4,7 @@ const Product = require("../../models/product.model")
 const filterStatusHelper = require("../../helpers/filterStatus");
 
 const searchHelper = require("../../helpers/search");
+const paginationHelper = require("../../helpers/pagination");
 // [GET] /admin/product
 
 module.exports.index = async (req,res)=>{
@@ -29,18 +30,27 @@ module.exports.index = async (req,res)=>{
     }
 
     //Pagination
+    const countProducts = await Product.countDocuments(find);
 
-    let objectPagination = {
+    let objectPagination = paginationHelper({
         currentPage : 1,
         limitItem : 4
-    };
+        },
+        req.query,
+        countProducts
+    )
 
-    if(req.query.page){
-        objectPagination.currentPage = parseInt(req.query.page) ;
-    }
-    objectPagination.skip = (objectPagination.currentPage - 1)*objectPagination.limitItem;
+    // if(req.query.page){
+    //     objectPagination.currentPage = parseInt(req.query.page) ;
+    // }
+    // objectPagination.skip = (objectPagination.currentPage - 1)*objectPagination.limitItem;
     
-    // const countProduct = 
+    // const countProducts = await Product.countDocuments(find);
+    // const totalPage = Math.ceil(countProducts/objectPagination.limitItem);
+    // objectPagination.totalPage = totalPage;
+    // console.log(totalPage);
+    // console.log(countProducts);
+
 
     //End Pagination 
 
@@ -50,6 +60,7 @@ module.exports.index = async (req,res)=>{
         title : "Trang Sản Phẩm",
         products: products,
         filterStatus:filterStatus,
-        keyword : objectSearch.keyword
+        keyword : objectSearch.keyword,
+        pagination : objectPagination
     })    
 };

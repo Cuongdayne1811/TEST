@@ -36,3 +36,21 @@ formSearch.addEventListener("submit",(event)=>{
     event.preventDefault();
     // console.log(event.target.keyword.value);
 });
+
+
+//pagination
+
+const buttonPagination = document.querySelectorAll("[button-pagination]");
+// console.log(buttonPagination);
+if(buttonPagination){
+    buttonPagination.forEach(button=>{
+        button.addEventListener("click",()=>{
+            const page = button.getAttribute("button-pagination")
+            url.searchParams.set("page",page);
+            window.location.href = url.href;
+                })
+    })
+}
+
+
+//end pagination 
