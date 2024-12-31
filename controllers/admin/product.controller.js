@@ -1,49 +1,55 @@
 //import model 
 const Product = require("../../models/product.model")
 
+const filterStatusHelper = require("../../helpers/filterStatus");
 
-
+const searchHelper = require("../../helpers/search");
 // [GET] /admin/product
 
 module.exports.index = async (req,res)=>{
 
-    const filterStatus = [
-        {
-            name:"Tất cả",
-            status:"",
-            class:""
-        },
-        {
-            name:"Hoạt động",
-            status:"active",
-            class:""
-        },
-        {
-            name:"Dừng hoạt động",
-            status:"inactive",
-            class:""
-        }
-    ]
-    //Dựa vào cái status của req mà thay đổi class của button đó thành active
-    if(req.query.status){
-        const index = filterStatus.findIndex(item=>item.status == req.query.status);
-        filterStatus[index].class = "active";
-    }else{
-        const index = filterStatus.findIndex(item=>item.status == "");
-        filterStatus[index].class = "active";
+    //Đoạn này là dùng cho bộ lọc 
+    const filterStatus = filterStatusHelper(req.query);
+
+    
+
+    let find = {
+        deleted : false 
     }
 
-    let find = {deleted : false }
+    
     // console.log(req.query.status);
     if(req.query.status){
         find.status=req.query.status;
     }
+    const objectSearch = searchHelper(req.query);
+    
+    if(objectSearch.regex){
+        find.title = objectSearch.regex;
+    }
 
-    const products = await Product.find(find);
+    //Pagination
+
+    let objectPagination = {
+        currentPage : 1,
+        limitItem : 4
+    };
+
+    if(req.query.page){
+        objectPagination.currentPage = parseInt(req.query.page) ;
+    }
+    objectPagination.skip = (objectPagination.currentPage - 1)*objectPagination.limitItem;
+    
+    // const countProduct = 
+
+    //End Pagination 
+
+    const products = await Product.find(find).limit(objectPagination.limit).skip(4);
     // console.log(products);
     res.render("admin/pages/products/index",{
         title : "Trang Sản Phẩm",
         products: products,
-        filterStatus:filterStatus
+        filterStatus:filterStatus,
+        keyword : objectSearch.keyword
     })    
 };
