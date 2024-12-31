@@ -54,7 +54,7 @@ module.exports.index = async (req,res)=>{
 
     //End Pagination 
 
-    const products = await Product.find(find).limit(objectPagination.limit).skip(4);
+    const products = await Product.find(find).limit(objectPagination.limitItem).skip(objectPagination.skip);
     // console.log(products);
     res.render("admin/pages/products/index",{
         title : "Trang Sản Phẩm",
@@ -64,3 +64,13 @@ module.exports.index = async (req,res)=>{
         pagination : objectPagination
     })    
 };
+
+// [GET] /admin/product/change-status/:status/:id
+module.exports.changeStatus = async (req,res) =>{
+    const status = req.params.status;
+    const id = req.params.id;
+    await Product.updateOne({ _id:id},{ status: status})
+
+    res.redirect("back"); 
+
+}

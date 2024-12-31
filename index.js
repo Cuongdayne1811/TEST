@@ -1,14 +1,17 @@
 const express = require("express")
+const methodOverride = require('method-override')
 require("dotenv").config();
 
 const database = require("./configs/database.js")
 const route = require("./routes/clients/index.route")
 const routeAdmin = require("./routes/admin/index.route.js")
 
+
 const systemConfig = require("./configs/system.js")
 const app = express();
 const port = process.env.PORT ;
 
+app.use(methodOverride('_method'))
 app.set("views","./views")
 app.set("view engine","pug")
 
