@@ -54,7 +54,9 @@ module.exports.index = async (req,res)=>{
 
     //End Pagination 
 
-    const products = await Product.find(find).limit(objectPagination.limitItem).skip(objectPagination.skip);
+    const products = await Product.find(find)
+    .limit(objectPagination.limitItem)
+    .skip(objectPagination.skip);
     // console.log(products);
     res.render("admin/pages/products/index",{
         title : "Trang Sản Phẩm",
@@ -71,6 +73,20 @@ module.exports.changeStatus = async (req,res) =>{
     const id = req.params.id;
     await Product.updateOne({ _id:id},{ status: status})
 
+    // FLASH thông báo ra màn hình thay đổi trạng thái thành công
+    req.flash("success","Cập nhật trạng thái của sản phẩm thành công !");
+
+    res.redirect("back"); 
+
+};
+
+//[DELETE] /admin/products/delete/:id
+module.exports.deleteItem = async (req,res) =>{
+    const id = req.params.id;
+    // ĐÂY LÀ XÓA CỨNG 
+    await Product.deleteOne({ _id:id})
+    // ĐÂY LÀ XÓA MỀM
+    await Product.updateOne({ _id:id},{deleted : true});
     res.redirect("back"); 
 
 }

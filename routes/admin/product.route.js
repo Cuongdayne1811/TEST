@@ -6,4 +6,6 @@ router.get('/',controller.index);
 // Dấu 2 chám dùng để nhận data động của 2 giá trị status và id 
 router.patch('/change-status/:status/:id',controller.changeStatus);
 
+router.delete('/delete/:id',controller.deleteItem);
+
 module.exports = router ;
