@@ -65,8 +65,8 @@
         display: none;
     }
 }
-[show-alert][close-alert]{
-    background: #fff;
+[show-alert] [close_alert] {
+    background: #ffffffc4;
     display: inline-block;
     width: 24px;
     height: 24px;

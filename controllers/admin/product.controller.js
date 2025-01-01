@@ -1,6 +1,7 @@
 //import model 
 const Product = require("../../models/product.model")
 
+const systemConfig = require("../../configs/system");
 const filterStatusHelper = require("../../helpers/filterStatus");
 
 const searchHelper = require("../../helpers/search");
@@ -89,4 +90,30 @@ module.exports.deleteItem = async (req,res) =>{
     await Product.updateOne({ _id:id},{deleted : true});
     res.redirect("back"); 
 
-}
+};
+//[GET] /admin/product/create
+module.exports.create = async (req,res)=>{
+    res.render("admin/pages/products/create",{
+        pageTitle: "Thêm mới sản phẩm"
+    });    
+};
+//[POST] /admin/product/create
+module.exports.createPost = async (req,res)=>{
+    
+    req.body.price=parseInt(req.body.price);
+    req.body.discountPercentage=parseInt(req.body.discountPercentage);
+    req.body.stock=parseInt(req.body.stock);
+
+    if(req.body.position==""){
+        const countProducts=await Product.countDocuments();
+        req.body.position= countProducts + 1;
+    } else{
+        req.body.position= parseInt(req.body.position);
+    }
+
+    req.body.thumbnail=`/uploads/${req.file.filename}`
+    const product= new Product(req.body);
+    await product.save();
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
+    
+};

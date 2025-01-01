@@ -2,24 +2,12 @@ extends ../../layouts/default.pug
 include ../../mixins/filter-status.pug
 include ../../mixins/search.pug
 include ../../mixins/pagination.pug
+include ../../mixins/alert.pug
 
 block main
-    
-    - if (messages.success)
-    .message.info
-        div(
-            class = "alert alert-success"
-            data-time = "5000"
-            show-alert
-        )   #{messages.success} 
-        
-
-        
+    +alert-success(5000)    
     h1 Danh Sách Sản Phẩm 
 
-    
-        
-    
     .card.mb-3 
         .card-header Bộ lọc và tìm kiếm 
         .card-body
@@ -29,6 +17,15 @@ block main
                 .col-6 
                     +search(keyword)
 
+    .card.mb-3 
+        .card-header Danh Sách
+        .card-body
+            .row
+                .col-4 
+                    a(
+                        href=`${prefixAdmin}/products/create`
+                        class="btn btn-outline-success"
+                    ) + Thêm Mới
 
     table.table.table-hover.table-sm 
         thead 

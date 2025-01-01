@@ -1,2 +1,3 @@
 #Loại bỏ folder node_module
 node_module/
+.env/

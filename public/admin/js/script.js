@@ -1,5 +1,4 @@
 const buttonsStatus  = document.querySelectorAll("[button-status]"); //thuộc tính tự định nghĩa thì thêm ngoặc vuông vào
-// console.log(buttonsStatus);
 
 if(buttonsStatus.length > 0){
     let url = new URL(window.location.href);
@@ -60,15 +59,38 @@ if(buttonPagination){
 const showAlert = document.querySelector("[show-alert]");
 if(showAlert){
     const time = parseInt(showAlert.getAttribute("data-time"));
-    const closeAlert = showAlert.querySelector("[close-alert]")
+    const closeAlert = showAlert.querySelector("[close_alert]");
     setTimeout(()=>{
-        showAlert.classList.add("alert-hidden")
-    },time)
-    console.log(showAlert);
+        showAlert.classList.add("alert-hidden");
+        
+    },time);
+     // Kiểm tra xem `closeAlert` có giá trị hay không
+
+    closeAlert.addEventListener("click",()=>{
+        showAlert.classList.add("alert-hidden");
+    });
 }
-closeAlert.addEventListener("click",()=>{
-    showAlert.classList.add("alert-hidden")
-})
+
 
 
 //END SHOW ALERT
+//upload image
+const uploadImage =document.querySelector("[upload_image]");
+console.log(uploadImage);
+const uploadImageInput = document.querySelector("[upload-image-input]");
+console.log(uploadImageInput);
+
+// if(uploadImage){
+//     const uploadImageInput = document.querySelector("[upload-image-input]");
+//     const uploadImagePreview = document.querySelector("[upload-image-preview]");
+//     uploadImageInput.addEventListener("change",(event)=>{
+//         console.log(event);
+//         const file = event.target.files[0];
+//         // if(file){
+//         //     uploadImagePreview.src=URL.createObjectURL(file);
+//         // }
+//     });
+// }
+// // else{
+// //     console.log("hewhwkfbwebfkwfhewhwkfbwebfkwf");
+// // }
