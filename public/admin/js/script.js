@@ -74,3 +74,16 @@ if(showAlert){
 
 
 //END SHOW ALERT
+
+
+//UPLOAD IMAGE
+const uploadImage = document.querySelector("[upload-image]");
+if(uploadImage){
+    const uploadImageInput = document.querySelector("[upload-image-input]");
+    const uploadImagePreview = document.querySelector("[upload-image-preview]");
+
+    uploadImageInput.addEventListener("change",(e)=>{
+        console.log(e);
+    })
+}
+//END UPLOAD IMAGE

@@ -92,26 +92,70 @@ module.exports.deleteItem = async (req,res) =>{
 
 };
 //[GET] /admin/product/create
-module.exports.create = async (req,res)=>{
-    res.render("admin/pages/products/create",{
-        pageTitle: "Thêm mới sản phẩm"
-    });    
+module.exports.create = async (req,res) =>{
+  res.render("admin/pages/products/create",{
+    pageTitle : " Thêm mới sản phẩm",
+  });
 };
+
+//[GET] /admin/product/edit/:id
+module.exports.edit = async (req,res) =>{
+    try {
+        const find ={
+            deleted : false,
+            _id : req.params.id
+        };
+        const product = await Product.findOne(find);
+        
+        
+        res.render("admin/pages/products/edit",{
+          pageTitle : " Chỉnh sửa sản phẩm",
+          product : product
+        });
+    } catch (error) {
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
+    }
+  };
+
+  //[PATCH] /admin/product/edit/:id
+  module.exports.editPatch = async (req,res) =>{
+    const id = req.params.id;
+    req.body.price=parseInt(req.body.price);
+    req.body.discountPercentage=parseInt(req.body.discountPercentage);
+    req.body.stock=parseInt(req.body.stock);
+    req.body.position= parseInt(req.body.position);
+
+    if(req.file){
+        req.body.thumbnail=`/uploads/${req.file.filename}`;
+    }
+    
+    try {
+        await Product.updateOne({id : id},req.body);
+        req.flash("success","Cập nhật thành công")
+    } catch (error) {
+        req.flash("error","Cập nhật thất bại")
+    }
+    res.redirect("back");
+  };
+
 //[POST] /admin/product/create
 module.exports.createPost = async (req,res)=>{
-    
+
     req.body.price=parseInt(req.body.price);
     req.body.discountPercentage=parseInt(req.body.discountPercentage);
     req.body.stock=parseInt(req.body.stock);
 
     if(req.body.position==""){
-        const countProducts=await Product.countDocuments();
+        const countProducts=await Product.count();
         req.body.position= countProducts + 1;
     } else{
         req.body.position= parseInt(req.body.position);
     }
 
-    req.body.thumbnail=`/uploads/${req.file.filename}`
+    if(req.file){
+        req.body.thumbnail=`/uploads/${req.file.filename}`;
+    }
+    
     const product= new Product(req.body);
     await product.save();
     res.redirect(`${systemConfig.prefixAdmin}/products`);
