@@ -69,4 +69,18 @@ module.exports.edit = async (req,res)=>{
         res.redirect(`${systemConfig.prefixAdmin}/roles`);
     }
     
-}
+};
+
+//[Get] /admin/roles/permissions
+module.exports.permissions = async (req,res)=>{
+    let find ={
+        deleted: false
+    };
+
+    const records= await Role.find(find);
+
+    res.render("admin/pages/roles/permissions", {
+        title : "Phân Quyền ",
+        records: records
+    });
+};
